@@ -1,63 +1,21 @@
 import Image from '@/node_modules/next/image';
 import HabitoCard from '@/componets/habitoCard';
 import Link from '@/node_modules/next/link';
+import { kv } from '@/node_modules/@vercel/kv/dist/index.cjs';
 
-export default function Home() {
-  const testes = [
-    {
-      habito: 'beber agua',
-      dias: [
-        {
-          dia: '2023-07-18',
-          validate: true,
-        },
-        {
-          dia: '2023-07-19',
-          validate: true,
-        }, {
-          dia: '2023-07-20',
-          validate: true,
-        }, {
-          dia: '2023-07-21',
-          validate: true,
-        },
-
-      ]
-    },
-    {
-      habito: 'codar',
-      dias: [
-        {
-          dia: '2023-07-18',
-          validate: true,
-        },
-        {
-          dia: '2023-07-19',
-          validate: true,
-        }, {
-          dia: '2023-07-20',
-          validate: true,
-        }, {
-          dia: '2023-07-21',
-          validate: true,
-        },
-
-      ]
-    }
-  ]
+export default async function Home() {
+  const resultados = await kv.hgetall('habitos');
+  console.log('aaaaaaaaaaaaaaaaaaa', resultados);
 
   return (
     <main>
       {
-        testes === null || testes.length === 0 && (
+        resultados === null || resultados.length === 0 ? (
           <h1>
             você não tem hábitos cadastrados
           </h1>
-        )}
-
-      {
-        testes !== null && testes.map((teste) => (
-          <HabitoCard key={teste.habito} info={teste} />
+        ) : Object.entries(resultados).map((resultado, index) => (
+          <HabitoCard key={index} info={resultado} />
         ))
       }
       <Link href='cadastrar-habito'>
