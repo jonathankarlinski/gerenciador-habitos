@@ -1,25 +1,26 @@
-import { novoHabito } from "@/actions/habitoActions";
-import Link from "@/node_modules/next/link";
+import { novoHabito } from "../actions";
 
-export default function CadastrarHabito() {
-
+export default function NovoHabito() {
   return (
     <main>
-      <h1>novo hábito</h1>
+      <h1>
+        novo hábito
+      </h1>
       <form action={novoHabito}>
         <input
-          type='text'
-          name='habito'
+          type="text"
+          name="habito"
+          id="habito"
         />
         <button
-          type='submit'
+          type="submit"
         >
           cadastrar
         </button>
-        <Link href='/'>
-        cancelar
-      </Link>
+        <button>
+          cancelar
+        </button>
       </form>
     </main>
-  )
+  );
 }

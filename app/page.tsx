@@ -1,26 +1,69 @@
-import Image from '@/node_modules/next/image';
-import HabitoCard from '@/componets/habitoCard';
-import Link from '@/node_modules/next/link';
-import { kv } from '@/node_modules/@vercel/kv/dist/index.cjs';
+import DayCheck from "@/componets/DayCheck";
+import DeleteButton from "@/componets/DeleteButton";
+import { kv } from "@vercel/kv";
+import Link from "next/link";
+
+export type Habits = {
+  [habit: string]: Record<string, boolean>;
+} | null;
 
 export default async function Home() {
-  const resultados = await kv.hgetall('habitos');
-  console.log('aaaaaaaaaaaaaaaaaaa', resultados);
+  const resultados: Habits = await kv.hgetall('habitos');
+
+  const today = new Date();
+  const todayWeekDay = today.getDay();
+  const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
+
+  const sortedWeekDays = weekDays
+    .slice(todayWeekDay + 1)
+    .concat(weekDays.slice(0, todayWeekDay + 1));
+
+  const orderDay = weekDays
+    .map((_, index) => {
+      const date = new Date();
+      date.setDate(date.getDate() - index);
+
+      return date.toISOString().slice(0, 10);
+    })
+    .reverse();
 
   return (
     <main>
-      {
-        resultados === null || resultados.length === 0 ? (
+      {resultados === null ||
+        (Object.keys(resultados).length === 0 && (
           <h1>
-            você não tem hábitos cadastrados
+            Você não tem hábitos cadastrados
           </h1>
-        ) : Object.entries(resultados).map((resultado, index) => (
-          <HabitoCard key={index} info={resultado} />
-        ))
-      }
-      <Link href='cadastrar-habito'>
+        ))}
+      {resultados !== null &&
+        Object.entries(resultados).map(([habito, habitStreak]) => (
+          <div key={habito} >
+            <div >
+              <span >
+                {habito}
+              </span>
+              <DeleteButton habito={habito} />
+            </div>
+            <Link href={`habito/${habito}`}>
+              <section >
+                {sortedWeekDays.map((day, index) => (
+                  <div key={day} >
+                    <span >
+                      {day}
+                    </span>
+                    <DayCheck diasCheck={habitStreak[orderDay[index]]} />
+                  </div>
+                ))}
+              </section>
+            </Link>
+          </div>
+        ))}
+
+      <Link
+        href='cadastrar-habito'
+      >
         novo hábito
       </Link>
     </main>
-  )
+  );
 }
