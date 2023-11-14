@@ -27,14 +27,16 @@ export default async function Home() {
     })
     .reverse();
 
+  console.log(resultados);
+
+
   return (
     <main>
-      {resultados === null ||
-        (Object.keys(resultados).length === 0 && (
-          <h1>
-            Você não tem hábitos cadastrados
-          </h1>
-        ))}
+      {resultados === null && (
+        <h1>
+          Você não tem hábitos cadastrados
+        </h1>
+      )}
       {resultados !== null &&
         Object.entries(resultados).map(([habito, habitStreak]) => (
           <div key={habito} >
