@@ -27,30 +27,27 @@ export default async function Home() {
     })
     .reverse();
 
-  console.log(resultados);
-
-
   return (
-    <main>
+    <main className="container relative flex flex-col gap-8 px-4 pt-16">
       {resultados === null && (
-        <h1>
+        <h1 className="mt-20 text-4xl font-light text-white font-display text-center">
           Você não tem hábitos cadastrados
         </h1>
       )}
       {resultados !== null &&
         Object.entries(resultados).map(([habito, habitStreak]) => (
-          <div key={habito} >
-            <div >
-              <span >
+          <div key={habito} className="flex flex-col gap-2">
+            <div className="flex justify-between items-center">
+              <span className="text-xl font-light text-white font-sans">
                 {habito}
               </span>
               <DeleteButton habito={habito} />
             </div>
             <Link href={`habito/${habito}`}>
-              <section >
+              <section className="grid grid-cols-7 bg-neutral-800 rounded-md p-2">
                 {sortedWeekDays.map((day, index) => (
-                  <div key={day} >
-                    <span >
+                  <div key={day} className="flex flex-col last:font-bold items-center gap-3">
+                    <span className="font-sans text-xs text-white ">
                       {day}
                     </span>
                     <DayCheck diasCheck={habitStreak[orderDay[index]]} />
@@ -63,6 +60,7 @@ export default async function Home() {
 
       <Link
         href='cadastrar-habito'
+        className="fixed text-center bottom-10 w-2/3 left-1/2 -translate-x-1/2 text-neutral-900 bg-[#45EDAD] font-display font-regular text-2xl p-2 rounded-md"
       >
         novo hábito
       </Link>

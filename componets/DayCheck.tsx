@@ -8,18 +8,18 @@ const iconeDia = (diasCheck: boolean | undefined) => {
   const iconProps = {
     incomplete: {
       icon: "/images/waiting.svg",
-      alt: "waiting dia",
+      alt: "icon waiting dia",
       size: 14,
     },
     complete: {
       icon: "/images/realized.svg",
-      alt: "check dia",
-      size: 24,
+      alt: "icon check dia",
+      size: 23,
     },
     fail: {
       icon: "/images/notDid.svg",
-      alt: "fail day",
-      size: 24,
+      alt: "icon fail day",
+      size: 20,
     },
   };
 
@@ -36,7 +36,7 @@ export default function CheckDayIcon({ diasCheck }: DiaProps) {
   const { icon, size, alt } = iconeDia(diasCheck);
 
   return (
-    <div>
+    <div className="flex items-center justify-center h-9">
       <Image src={icon} width={size} height={size} alt={alt} />
     </div>
   );

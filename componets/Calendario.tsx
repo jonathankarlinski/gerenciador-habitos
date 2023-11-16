@@ -3,6 +3,7 @@
 import { toggleHabit } from "@/app/actions";
 import { useEffect, useState } from "react";
 import DayCheck from "./DayCheck";
+import IconeFlecha from "./IconeFlecha";
 
 function getDaysInMonth(month: number, year: number) {
   const date = new Date(year, month, 1);
@@ -70,27 +71,38 @@ export default function Calendario({
   }
 
   return (
-    <section>
-      <div>
-        <button onClick={() => setMes(month - 1)}>
-          voltar
+    <section className="w-full my-2 rounded-md bg-neutral-800 p-2">
+      <div className="flex justify-between mx-2 my-4 font-sans text-neutral-300">
+        <button
+          className="stroke-neutral-400"
+          onClick={() => setMes(month - 1)}
+        >
+          <IconeFlecha width={15} height={15} />
         </button>
         <span>{getName()}</span>
-        <button onClick={() => setMes(month + 1)}>
-          avançar
+        <button
+          onClick={() => setMes(month + 1)}
+          className="stroke-neutral-400"
+          style={{ transform: 'rotate(180deg)' }}
+        >
+          <IconeFlecha
+            width={15}
+            height={15}
+          />
         </button>
       </div>
-      <div>
+      <div className="grid w-full grid-cols-7 mt-2">
         {weekDays.map((day) => (
-          <div key={day}>
-            <span>
+          <div key={day} className="flex flex-col items-center p-2">
+            <span className="font-sans text-xs font-light text-neutral-200 text-white">
               {day}
             </span>
           </div>
         ))}
         {daysInMonth.map((day, index) => (
-          <div
+          <button
             key={index}
+            className="flex flex-col items-center p-2 gap-2"
             onClick={() =>
               toggleHabit({
                 habito,
@@ -100,7 +112,7 @@ export default function Calendario({
               })
             }
           >
-            <span>
+            <span className="font-sans text-xs font-light text-neutral-400 text-center text-white">
               {day?.getDate()}
             </span>
             {day && (
@@ -108,7 +120,7 @@ export default function Calendario({
                 diasCheck={habitStreak ? habitStreak[getDay(day)] : undefined}
               />
             )}
-          </div>
+          </button>
         ))}
       </div>
     </section>
